@@ -5,6 +5,7 @@ net view \\<TARGET_COMPUTER_NAME>or<ip>
 NETBIOS
 
 The most common use of nbtstat is to view the NetBIOS name table of a local or remote computer. This table stores the names that NetBIOS uses to identify systems on a network.
+netbios -A <remote computer ip>
 
 Common nbtstat Command Options
 Option	Description
