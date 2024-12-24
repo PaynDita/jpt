@@ -1,0 +1,107 @@
+NOTEEEEE: Ensure that the remote Windows system has SMB enabled and TCP port 445 is accessible.
+Administrator Privileges:
+
+WinExe
+Detection Risk: Low to Moderate
+----------------------------------------------------------------
+
+Impacket's psexec.py
+The Impacket suite provides a Python implementation of PsExec, which allows you to execute commands on remote Windows machines.
+
+Installation
+Install Impacket:
+sudo apt update
+sudo apt install impacket-scripts
+
+----------------------------------------------
+Verify installation:
+bash
+psexec.py --help
+Usage Example
+Execute a command (ipconfig) on a remote Windows system:
+
+psexec.py administrator:Password123@192.168.1.100 cmd.exe
+To execute a specific command:
+psexec.py administrator:Password123@192.168.1.100 -c "ipconfig"
+----------------------------------------------------------------
+
+Metasploit Framework
+The Metasploit Framework includes a PsExec-like module for remote code execution.
+
+msfconsole
+Load the PsExec module:
+use exploit/windows/smb/psexec
+Set the required options:
+set RHOSTS <TARGET_IP>
+set SMBUser <USERNAME>
+set SMBPass <PASSWORD>
+run
+This module allows you to run commands or upload payloads like Meterpreter shells to the target.
+---------------------------------------------------------------------------------------------------
+
+CrackMapExec
+CrackMapExec is a post-exploitation tool designed for SMB and Active Directory enumeration, but it also has PsExec-like functionality.
+
+Install CrackMapExec:
+sudo apt install crackmapexec
+Verify installation:
+
+crackmapexec --help
+Usage Example
+Run a command (ipconfig) on a remote system:
+
+crackmapexec smb <TARGET_IP> -u <USERNAME> -p <PASSWORD> -x "ipconfig"
+----------------------------------------------------------------------------------------------------
+
+SMBExec
+SMBExec is another PsExec alternative designed for remote command execution over SMB.
+
+Installation
+Clone the SMBExec repository:
+
+git clone https://github.com/brav0hax/smbexec.git
+cd smbexec
+Usage Example
+Execute commands on a target system:
+
+python smbexec.py -i <TARGET_IP> -u <USERNAME> -p <PASSWORD> -c "ipconfig"
+
+----------------------------------------------------------------------------------------------------------------
+WinExe
+WinExe is a Linux-based tool similar to PsExec that allows you to execute commands on remote Windows systems.
+
+Installation
+Install WinExe:
+
+sudo apt install winexe
+Verify installation:
+
+winexe --help
+Usage Example
+Run a command (ipconfig) on a remote system:
+
+winexe -U <USERNAME>%<PASSWORD> //<TARGET_IP> "cmd.exe /c ipconfig"
+
+---------------------------------------------------------------------------
+
+Requirements for All Tools
+SMB Port (445):
+
+Ensure that the remote Windows system has SMB enabled and TCP port 445 is accessible.
+Administrator Privileges:
+
+You must have valid credentials with administrator rights to execute commands remotely.
+Firewall Configuration:
+
+Remote systems must allow SMB and remote command execution.
+Security Warning
+Tools like psexec.py, CrackMapExec, and Metasploit can trigger antivirus software or security alerts on the target system.
+Use these tools only in authorized environments (e.g., for penetration testing or with explicit permission).
+Would you like a detailed example with one of these tools? Let me know!
+
+
+
+
+
+
+
