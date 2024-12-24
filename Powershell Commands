@@ -1,3 +1,18 @@
 NET VIEW command is used in Windows to display a list of computers or shared resources on a network. It is typically used for network enumeration or browsing shared resources within a Windows network.
 
 net view \\<TARGET_COMPUTER_NAME>or<ip>
+------------------------------------------------------
+NETBIOS
+
+The most common use of nbtstat is to view the NetBIOS name table of a local or remote computer. This table stores the names that NetBIOS uses to identify systems on a network.
+
+Common nbtstat Command Options
+Option	Description
+-n	Displays the NetBIOS name table for the local machine.
+-A <IP>	Displays the NetBIOS name table of a remote computer.
+-c	Displays the NetBIOS name cache (previously resolved names).
+-s	Displays the status of active NetBIOS sessions.
+-R	Clears the NetBIOS name cache and refreshes it.
+-RR	Releases the NetBIOS name table and re-registers the computer name.
+
+------------------------------------------------------------------------------
