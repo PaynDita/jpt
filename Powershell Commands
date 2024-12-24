@@ -1,0 +1,3 @@
+NET VIEW command is used in Windows to display a list of computers or shared resources on a network. It is typically used for network enumeration or browsing shared resources within a Windows network.
+
+net view \\<TARGET_COMPUTER_NAME>or<ip>
