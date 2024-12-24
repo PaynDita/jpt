@@ -13,6 +13,10 @@ smb-protocols	          Lists the SMB protocol versions supported by the target 
 smb2-capabilities      	Identifies capabilities of SMB2 servers, such as compression and encryption.
 smb2-security-mode      	Checks the SMB2/SMB3 security level (signing/encryption).
 
+nmap --script smb-vuln-cve-2020-0796 -p 445 <target_ip>
+
+nmap --script smb-brute -p 445 <target_ip>
+
 --------------------------------------------------------------------------------------------
 
 Impacket's SMB Python Modules
