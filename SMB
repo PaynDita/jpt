@@ -1,14 +1,17 @@
 
 
-Common SMB Scripts in Nmap
-Script Name	Description
-smb-os-discovery	Discovers the operating system and version via SMB.
-smb-enum-shares	Enumerates shared folders on a target.
-smb-enum-users	Lists SMB domain users.
-smb-vuln-ms17-010	Checks if the target is vulnerable to EternalBlue (MS17-010).
-smb-brute	Attempts to brute force SMB credentials.
-smb-security-mode	Checks SMB security configurations.
-
+Nmap Script	Purpose
+smb-os-discovery        	Identifies the target's operating system using SMB.
+smb-enum-shares	         Enumerates shared folders on a target system.
+smb-enum-users	          Lists SMB domain users and accounts.
+smb-enum-processes	      Lists processes on the target via SMB.
+smb-vuln-ms17-010	       Checks for the EternalBlue (MS17-010) vulnerability.
+smb-vuln-cve-2020-0796	  Checks for the SMBv3 vulnerability (CVE-2020-0796).
+smb-brute               	Attempts to brute-force SMB login credentials.
+smb-security-mode        	Determines the SMB security mode (authentication level, signing, etc.).
+smb-protocols	          Lists the SMB protocol versions supported by the target (e.g., SMB1, SMB2, SMB3).
+smb2-capabilities      	Identifies capabilities of SMB2 servers, such as compression and encryption.
+smb2-security-mode      	Checks the SMB2/SMB3 security level (signing/encryption).
 
 --------------------------------------------------------------------------------------------
 
