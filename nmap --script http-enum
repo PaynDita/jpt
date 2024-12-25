@@ -1,0 +1,86 @@
+The nmap --script http-enum command is used with Nmap, a powerful network scanning tool, to identify publicly accessible directories, files, and applications on a web server. The http-enum script specifically scans for common files and directories that might exist on a web server (e.g., login pages, admin interfaces, configuration files, etc.).
+
+Syntax
+bash
+Copy code
+nmap --script http-enum -p <port> <target>
+What It Does
+The http-enum script performs the following actions:
+
+Scans a web server for common files and directories (based on a built-in database of paths).
+Enumerates potential entry points or exposed services.
+Outputs the results, highlighting accessible paths.
+Example Usage
+Basic Command
+bash
+Copy code
+nmap --script http-enum -p 80 example.com
+--script http-enum: Activates the http-enum script for web enumeration.
+-p 80: Scans port 80 (HTTP). You can specify other ports like 8080, 443 (HTTPS), etc.
+example.com: The target domain or IP address.
+Advanced Usage
+Scanning Multiple Ports
+bash
+Copy code
+nmap --script http-enum -p 80,443,8080 example.com
+Scans multiple ports (80, 443, 8080) for web enumeration.
+Combining with Other HTTP Scripts
+bash
+Copy code
+nmap --script http-enum,http-title,http-methods -p 80 example.com
+Runs http-enum, http-title (to identify page titles), and http-methods (to list supported HTTP methods) together.
+Outputting Results to a File
+bash
+Copy code
+nmap --script http-enum -p 80 example.com -oN http-enum-results.txt
+Saves the scan results in a text file called http-enum-results.txt.
+Increasing Verbosity
+bash
+Copy code
+nmap -v --script http-enum -p 80 example.com
+Adds verbose output for more detailed scan progress and results.
+Sample Output
+plaintext
+Copy code
+PORT   STATE SERVICE
+80/tcp open  http
+| http-enum:
+|   /admin/: Admin login page
+|   /backup/: Backup folder
+|   /config/: Configuration directory
+|   /phpmyadmin/: phpMyAdmin login page
+|   /robots.txt: Contains a list of disallowed paths
+|_  /login/: User login page
+The output shows directories and files that were discovered during the scan.
+Practical Scenarios
+Penetration Testing:
+
+Identify sensitive files (e.g., /backup/, /config/, /admin/).
+Spot misconfigured or publicly exposed admin interfaces.
+Bug Bounty Programs:
+
+Look for unprotected admin panels or forgotten test environments.
+Analyze exposed directories for sensitive files (e.g., .git/, .svn/).
+System Hardening:
+
+Test your own web servers to identify exposed resources and fix misconfigurations.
+Tips for Effective Use
+Use in Combination with Other Tools:
+
+Combine with tools like Dirb, Gobuster, or Nikto for a deeper analysis.
+Scan HTTPS with TLS Support:
+
+Add the -p 443 flag or explicitly specify HTTPS using --script-args:
+bash
+Copy code
+nmap --script http-enum -p 443 --script-args http-enum.https=true example.com
+Adjust Timing for Large Scans:
+
+For faster results, use:
+bash
+Copy code
+nmap --script http-enum -p 80 --min-rate 1000 example.com
+For stealthy scans:
+bash
+Copy code
+nmap --script http-enum -p 80 --timing 2 example.com
