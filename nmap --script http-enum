@@ -1,3 +1,9 @@
+nmap --script http-shellshock -p 80,443 example.com
+
+nmap --script http-enum -p 80 example.com
+
+------------------------------------------------------------------
+
 The nmap --script http-enum command is used with Nmap, a powerful network scanning tool, to identify publicly accessible directories, files, and applications on a web server. The http-enum script specifically scans for common files and directories that might exist on a web server (e.g., login pages, admin interfaces, configuration files, etc.).
 
 Syntax
