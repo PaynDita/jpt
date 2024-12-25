@@ -15,7 +15,7 @@ sudo apt install impacket-scripts
 
 ----------------------------------------------
 Verify installation:
-bash
+
 psexec.py --help
 Usage Example
 Execute a command (ipconfig) on a remote Windows system:
