@@ -12,26 +12,20 @@ Run the following commands to install the required packages:
 sudo apt update
 sudo apt install -y git build-essential python3 python3-pip python3-dev \
 qemu binwalk squashfs-tools kmod gcc g++ make
+
 git: For cloning repositories.
 binwalk: To extract firmware files.
 qemu: For emulating firmware.
 squashfs-tools: For decompressing SquashFS file systems.
+
 Install Python Dependencies: Next, install Python packages that FAT depends on.
-
-
-
 pip3 install -r requirements.txt
+
 Step 2: Clone the Firmware Analysis Toolkit Repository
 Clone FAT from GitHub: Use git to clone the FAT repository to your local machine.
-
-
-
 git clone https://github.com/attify/firmware-analysis-toolkit.git
 cd firmware-analysis-toolkit
 Run Setup Script: FAT includes a setup script to install any additional dependencies. It is important to run it before using FAT.
-
-
-
 ./setup.sh
 This script will install various tools like Binwalk, QEMU, and other dependencies needed for firmware analysis.
 
@@ -40,18 +34,17 @@ Get Firmware:
 Go to the manufacturer’s website for the device (for example, a router or smart thermostat).
 Download the firmware image file (it could be a .bin, .img, or similar file extension).
 If the firmware is encrypted or compressed, FAT will automatically help with extracting or decrypting it.
+
 Step 4: Run FAT to Analyze Firmware
 Launch FAT: Inside the FAT directory, launch the FAT script:
-
-
-
 ./fat.py
 Choose Firmware to Analyze: The script will ask for the path to the firmware file. Enter the path of the firmware you downloaded. For example:
 
 plaintext
 
 Enter the path to the firmware: /path/to/firmware.bin
-Extract Firmware: FAT will use Binwalk to analyze and extract the firmware. This includes decomposing the firmware into its file system and any embedded files, which can include configuration files, executables, and other parts of the firmware image.
+Extract Firmware: FAT will use Binwalk to analyze and extract the firmware. This includes decomposing the firmware into its file system and any embedded files, which can include configuration files, executables,
+and other parts of the firmware image.
 
 Analyze the File System: FAT will attempt to mount the extracted file system. You may see a directory structure of the firmware, and it may list out directories like /etc, /bin, /lib, /root, etc.
 
@@ -92,7 +85,8 @@ Look for Vulnerabilities: Once extracted, browse the firmware file system. Commo
 /etc/passwd: Look for hardcoded usernames and passwords.
 /etc/init.d/: Review startup scripts for any insecure services running.
 /bin/ or /sbin/: Check for any executables or binaries with weak permissions or security flaws.
-Check for Open Ports and Services: Some routers may expose services like Telnet, SSH, or HTTP with default credentials. These can be easily found by looking at the firmware configuration files or running the emulated firmware with QEMU.
+Check for Open Ports and Services: Some routers may expose services like Telnet, SSH, or HTTP with default credentials. These can be easily found by looking at the firmware configuration files or running the
+emulated firmware with QEMU.
 
 Exploit Discovery: Once you find insecure services, configurations, or vulnerabilities (like an open Telnet port with no authentication), you can attempt to exploit them to test the device's security.
 
@@ -103,4 +97,5 @@ Any security flaws or misconfigurations you discovered.
 Recommendations on how to patch the firmware (e.g., disabling insecure services, changing default passwords, patching known vulnerabilities).
 For serious vulnerabilities (like backdoors or remote code execution), you may also suggest the device manufacturer issue a firmware update.
 Final Thoughts
-FAT is an incredibly powerful toolkit for automating the analysis of firmware and discovering vulnerabilities in embedded systems. With tools like Binwalk, QEMU, and others, FAT simplifies the process of extracting, inspecting, and emulating firmware, making it an essential tool for penetration testers working with IoT and other embedded devices.
+FAT is an incredibly powerful toolkit for automating the analysis of firmware and discovering vulnerabilities in embedded systems. With tools like Binwalk, QEMU, and others, 
+FAT simplifies the process of extracting, inspecting, and emulating firmware, making it an essential tool for penetration testers working with IoT and other embedded devices.
