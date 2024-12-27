@@ -1,3 +1,3 @@
 Port 445 _ SMB
 SMB for user enumeration - msf6> auxilary(scanner/smb/smblogin)
-following the user credentials enumerated from SMB we use PSExec  - msf> exploit(windows/smb/psexec)
+following the user credentials enumerated from SMB we use PSExec  - msf> exploit(windows/smb/psexec) - meterpreter session!!
