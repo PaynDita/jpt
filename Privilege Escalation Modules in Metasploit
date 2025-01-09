@@ -1,0 +1,72 @@
+Privilege Escalation Modules in Metasploit
+Privilege escalation in Metasploit is categorized into several types, depending on the techniques and vulnerabilities they exploit:
+
+1. Kernel Exploits
+These modules exploit vulnerabilities in the system kernel to escalate privileges, often providing root or SYSTEM access.
+Example Modules:
+exploit/linux/local/dirty_pipe: Exploits the Dirty Pipe vulnerability (CVE-2022-0847) in Linux kernels.
+exploit/linux/local/overlayfs_priv_esc: Exploits OverlayFS vulnerabilities for privilege escalation.
+exploit/windows/local/ms13_053_schlamperei: Targets Windows kernel vulnerability (CVE-2013-3660).
+exploit/windows/local/cve_2021_1675_printnightmare: Exploits the PrintNightmare vulnerability for SYSTEM access.
+2. Misconfiguration Exploits
+These modules take advantage of poorly configured services, applications, or file permissions.
+Example Modules:
+exploit/linux/local/sudo_baron_samedit: Exploits the sudo vulnerability (CVE-2021-3156) to gain root access.
+exploit/linux/local/apt_package_manager_persistence: Exploits writable configuration files in APT package managers.
+exploit/windows/local/service_permissions: Abuses misconfigured Windows service permissions for privilege escalation.
+3. Credential-Based Escalation
+These modules leverage credentials obtained from previous attacks to escalate privileges.
+Example Modules:
+post/windows/gather/hashdump: Dumps password hashes from a compromised Windows machine.
+exploit/windows/local/bypassuac: Bypasses User Account Control (UAC) to elevate privileges on Windows systems.
+post/multi/manage/sshkey_persistence: Drops SSH keys to gain persistent access with elevated privileges.
+4. File Hijacking
+These modules manipulate writable files or binaries to gain elevated privileges.
+Example Modules:
+exploit/linux/local/suid_executable: Abuses SUID binaries with misconfigured permissions to escalate privileges.
+exploit/windows/local/always_install_elevated: Exploits the "AlwaysInstallElevated" policy in Windows to execute MSI files as SYSTEM.
+5. Exploiting Scheduled Tasks/Services
+These modules abuse scheduled tasks or services for privilege escalation.
+Example Modules:
+exploit/windows/local/persistence: Creates a scheduled task or service for privilege escalation and persistence.
+exploit/linux/local/cron_permissions: Exploits misconfigured cron jobs to execute commands as root.
+6. Token Manipulation
+These modules focus on token impersonation or manipulation to elevate privileges on Windows systems.
+Example Modules:
+post/windows/manage/steal_token: Steals a token from another process for privilege escalation.
+post/windows/manage/kiwi: Leverages the Mimikatz library to extract tokens or credentials.
+7. Vulnerability-Based Escalation
+These modules exploit known vulnerabilities in installed software or system components.
+Example Modules:
+exploit/linux/local/pkexec: Exploits Polkit's pkexec vulnerability (CVE-2021-4034) to gain root privileges.
+exploit/windows/local/ikeext_service: Targets a vulnerability in Windows IKEEXT service for escalation.
+8. Exploiting Software and Applications
+These modules abuse software installed on the target system to escalate privileges.
+Example Modules:
+exploit/linux/local/zoom_vdi_priv_esc: Exploits a vulnerability in Zoom VDI Plugin for Linux.
+exploit/windows/local/ms14_058_track_popup_menu: Exploits a vulnerability in Windows to escalate privileges.
+How to Use Privilege Escalation Modules in Metasploit
+Gaining Initial Access:
+
+Before using a privilege escalation module, ensure you have a foothold on the target machine (e.g., a meterpreter session).
+Post-Exploitation Enumeration:
+
+Use modules like post/multi/recon/local_exploit_suggester to identify potential privilege escalation opportunities on the target.
+arduino
+Copy code
+use post/multi/recon/local_exploit_suggester
+set SESSION <session_id>
+run
+Choose a Suitable Module:
+
+Based on the results, choose a privilege escalation module that matches the target system and vulnerability.
+Set Module Options:
+
+Configure the necessary options for the module (e.g., session ID, payload, etc.).
+Execute the Exploit:
+
+Run the module to attempt privilege escalation. If successful, you’ll gain higher-level access (e.g., root or SYSTEM).
+Precautions
+Stability: Some privilege escalation exploits can crash the target system or services.
+Permissions: Use these modules only on systems where you have explicit permission for penetration testing.
+Persistence: After escalating privileges, consider setting up persistence (e.g., creating a backdoor) to maintain access.
