@@ -1,0 +1,71 @@
+
+unshadow /etc/passwd /etc/shadow > combined.txt
+
+john combined.txt 
+OR
+john combined.txt --wordlist=/usr/share/wordlist/password
+----------------------------------------------------------------
+Here if we need for one user only then we could select that user only
+cat /etc/passwd  - copy root and paste to new file rootuser.txt
+cat /etc/shadow - copy root hash value and paste to new file roothash.txt
+
+unshadow rootuser.txt roothash.txt > combined.txt
+john combined.txt --wordlist=/usr/share/wordlist/password
+
+----------------------------------------------------------------------------
+
+
+
+The unshadow command is part of the John the Ripper suite and is used to combine the /etc/passwd and /etc/shadow files into a single file that can be used for password cracking. 
+This is necessary because the /etc/passwd file contains user information (including usernames) but does not contain password hashes, while the /etc/shadow file contains password hashes but is only accessible by 
+the root user OR ROOT USER PRIVILEDGE
+
+Here's a clear example of how to use the unshadow command:
+
+Steps to Use unshadow:
+Obtain the /etc/passwd and /etc/shadow Files:
+
+These files are typically located in /etc/ on most Linux systems.
+You must have root privileges to access the /etc/shadow file.
+Run the unshadow Command:
+
+The unshadow command combines both files into a single file that can be used for password cracking.
+Example Command Line:
+bash
+Copy code
+sudo unshadow /etc/passwd /etc/shadow > combined.txt
+Explanation:
+sudo: This is required because you need root access to read the /etc/shadow file.
+unshadow: This is the command to combine the /etc/passwd and /etc/shadow files.
+/etc/passwd: This file contains user account information such as usernames.
+/etc/shadow: This file contains the hashed passwords (which are secured and only accessible by the root user).
+> combined.txt: This redirects the output of the combined file to a new file called combined.txt.
+Output:
+The combined.txt file will contain an entry for each user in the following format:
+
+css
+Copy code
+username:hashed_password:last_change:min_age:max_age:warn_period:inactive_period:expire_date:reserved_field
+For example, an entry might look like:
+
+ruby
+Copy code
+root:$6$abcd1234$Hk...hashed_part...Uj:0:0:root:/root:/bin/bash
+user:$6$efgh5678$Hk...another_hash...Gj:1000:1000:User:/home/user:/bin/bash
+root: The username.
+$6$abcd1234$...: The hashed password (in this case, it's a SHA-512 hash).
+/root: The home directory of the user.
+/bin/bash: The user's default shell.
+Using the Combined File for Cracking:
+After combining the files using unshadow, you can use John the Ripper to crack the password hashes:
+
+bash
+Copy code
+john combined.txt
+This will start cracking the hashes in combined.txt using John the Ripper.
+
+Important Notes:
+Permissions: You must be root (or have root privileges) to access the /etc/shadow file.
+Legality: Make sure that you have permission to access these files. Cracking passwords without authorization is illegal.
+John the Ripper: Ensure that John the Ripper is installed on your system before using it to crack passwords.
+Let me know if you need further clarification or more detailed examples!
