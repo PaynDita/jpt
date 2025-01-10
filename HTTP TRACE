@@ -1,0 +1,15 @@
+HTTP TRACE with Nmap:
+If you're looking to specifically identify if HTTP TRACE is enabled, you can use the http-methods script like this:
+
+nmap -p 80 --script=http-methods <target>
+This command will focus on port 80 (common for HTTP) and check for the methods that are allowed, including TRACE.
+
+Example Output:
+If TRACE is enabled, you'll see output like this:
+
+80/tcp open  http
+| http-methods: 
+|   Supported Methods: GET POST OPTIONS TRACE
+|_  Potentially risky methods: TRACE
+
+This output shows that TRACE is enabled and might be considered risky.
