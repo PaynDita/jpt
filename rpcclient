@@ -2,15 +2,21 @@
 The rpcclient tool can query a server to check the access control on shares.
 
 Command:
-bash
-Copy
 rpcclient -U "" <IP_ADDRESS>
+
 This attempts to connect without a username (empty string "").
 If it allows the connection, the server may allow public access.
+
 Once connected, you can list shares using:
-bash
-Copy
 netshareenum
+
+Enumerate shares (netshareenum).
+Enumerate users (enumdomusers).
+Enumerate groups (enumdomgroups).
+Query system information (srvinfo or lsaquery).
+Retrieve domain policies (getdompwinfo).
+........................................................................................................................................
+
 4. Review Share Details (If You Have Access)
 If you can log in to the server or query its configurations (e.g., in a Linux Samba server), you can check whether a share is public.
 
