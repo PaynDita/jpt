@@ -17,6 +17,97 @@ Query system information (srvinfo or lsaquery).
 Retrieve domain policies (getdompwinfo).
 ........................................................................................................................................
 
+
+1. Using rpcclient for Enumeration
+rpcclient is excellent for gathering detailed information about the target, such as shares, users, groups, and other domain or system-level data. Some common enumeration tasks include:
+
+Enumerating Shares
+bash
+Copy
+rpcclient -U "" <IP_ADDRESS>
+rpcclient $> netshareenum
+This will list all available shares on the target.
+Example output:
+mathematica
+Copy
+Sharename       Type      Comment
+---------       ----      -------
+Documents       Disk      Shared Documents
+IPC$            IPC       IPC Service
+ADMIN$          Disk      Remote Admin
+Enumerating Users
+bash
+Copy
+rpcclient $> enumdomusers
+Getting User Details
+bash
+Copy
+rpcclient $> queryuser <RID>
+Listing Groups
+bash
+Copy
+rpcclient $> enumdomgroups
+2. Using smbclient to Download Files
+Once you've identified accessible shares using rpcclient, you can switch to smbclient to browse and download files.
+
+Step 1: Check Share Access
+Use the following to test access to a specific share:
+
+bash
+Copy
+smbclient //<IP_ADDRESS>/<SHARENAME> -U username
+For anonymous access:
+
+bash
+Copy
+smbclient //<IP_ADDRESS>/<SHARENAME> -N
+Step 2: List Files in the Share
+Once connected, use ls to list files:
+
+bash
+Copy
+smb: \> ls
+Step 3: Download Files
+Use get to download specific files:
+
+bash
+Copy
+smb: \> get <filename>
+Example Workflow
+Enumerate shares with rpcclient:
+
+bash
+Copy
+rpcclient $> netshareenum
+Output:
+
+diff
+Copy
+Sharename       Type      Comment
+---------       ----      -------
+Documents       Disk      Shared Documents
+Test access to the Documents share:
+
+bash
+Copy
+smbclient //<IP_ADDRESS>/Documents -N
+If successful, you'll see an smb: \> prompt.
+
+List and download files:
+
+bash
+Copy
+smb: \> ls
+smb: \> get sensitive_file.txt
+3. Why Combine Both Tools?
+rpcclient excels at gathering data (e.g., listing shares, enumerating users).
+smbclient is better for file operations (e.g., downloading, uploading, or browsing share contents).
+Combining these tools allows you to:
+
+Use rpcclient for reconnaissance (e.g., find shares and permissions).
+Use smbclient to exploit accessible shares and download sensitive files.
+
+-------------------------------------------------------------------------------------------------------------------------
 4. Review Share Details (If You Have Access)
 If you can log in to the server or query its configurations (e.g., in a Linux Samba server), you can check whether a share is public.
 
